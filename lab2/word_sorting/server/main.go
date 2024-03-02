@@ -1,7 +1,6 @@
 package main
 
 import (
-	"io"
 	"net/http"
 	"sort"
 	"strings"
@@ -25,10 +24,6 @@ func sortWords(textBlock string) []string {
 	return uniqueWords
 }
 
-func EchoServer(ws *websocket.Conn) {
-	io.Copy(ws, ws)
-}
-
 func SortServer(ws *websocket.Conn) {
 	buf := make([]byte, 32*1024)
 	n, err := ws.Read(buf)
@@ -42,7 +37,6 @@ func SortServer(ws *websocket.Conn) {
 
 // This example demonstrates a trivial echo server.
 func main() {
-	http.Handle("/echo", websocket.Handler(EchoServer))
 	http.Handle("/sort", websocket.Handler(SortServer))
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
