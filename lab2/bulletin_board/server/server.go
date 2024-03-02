@@ -43,7 +43,7 @@ func (cs *bulletinServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func (cs *bulletinServer) BulletinHandler(w http.ResponseWriter, r *http.Request) {
 	opts := websocket.AcceptOptions{
-		OriginPatterns: []string{"localhost:5175"},
+		OriginPatterns: []string{"localhost:*"},
 	}
 
 	conn, err := websocket.Accept(w, r, &opts)
