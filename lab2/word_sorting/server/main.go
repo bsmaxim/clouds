@@ -26,13 +26,15 @@ func sortWords(textBlock string) []string {
 
 func SortServer(ws *websocket.Conn) {
 	buf := make([]byte, 32*1024)
-	n, err := ws.Read(buf)
-	if err != nil {
-		return
+	for {
+		n, err := ws.Read(buf)
+		if err != nil {
+			return
+		}
+		words := string(buf[:n])
+		sortedWords := sortWords(words)
+		ws.Write([]byte(strings.Join(sortedWords, " ")))
 	}
-	words := string(buf[:n])
-	sortedWords := sortWords(words)
-	ws.Write([]byte(strings.Join(sortedWords, " ")))
 }
 
 // This example demonstrates a trivial echo server.
