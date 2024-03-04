@@ -39,13 +39,19 @@ type ServerResponse = {
 
 socket.onmessage = (event) => {
   const output: ServerResponse = JSON.parse(event.data);
-  if (output.AnswerType.toUpperCase() === "LIST") {
+  if (output.AnswerType === "LIST") {
     let messages = output.Value;
     let messageList = document.querySelector<HTMLUListElement>(".item-ul")!;
+    if (messages.length == 0) {
+        messageList.InnerHTML = `
+        <h2>No items</h2>
+        `;
+    } else {
     messageList.innerHTML = `
       <h2>Items</h2>
       ${messages.map((message: string) => `<li>${message};</li>`).join("")}
     `;
+    }
   } else if (output.AnswerType === "MESSAGE") {
     let messageList = document.querySelector<HTMLUListElement>(".item-ul")!;
     messageList.innerHTML = `<h3>Message</h3>\n<li>${output.Value}</li>`;
